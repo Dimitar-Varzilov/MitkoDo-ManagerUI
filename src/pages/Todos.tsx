@@ -4,7 +4,7 @@ import type { UUID } from 'crypto'
 
 import { useNavigate } from 'react-router-dom'
 
-import { useGetToDosQuery } from '../api/taskApi'
+import { useGetToDosQuery } from '../api/toDoApi'
 
 const Todos = () => {
   const { data = [] } = useGetToDosQuery()

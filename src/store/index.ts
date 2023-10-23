@@ -11,7 +11,7 @@ import { createReduxHistoryContext } from 'redux-first-history'
 
 import { authApi } from '../api/auth/authApi'
 import authSlice from '../api/auth/authSlice'
-import { toDoApi } from '../api/taskApi'
+import { toDoApi } from '../api/toDoApi'
 import { ReducerNames } from '../api/types'
 
 // Setup redux-first-history
@@ -29,7 +29,7 @@ export const store = configureStore({
     [ReducerNames.Auth]: authSlice,
     [ReducerNames.AuthApi]: authApi.reducer,
     [ReducerNames.Router]: routerReducer,
-    [ReducerNames.TaskApi]: toDoApi.reducer,
+    [ReducerNames.ToDoApi]: toDoApi.reducer,
   }),
 })
 
