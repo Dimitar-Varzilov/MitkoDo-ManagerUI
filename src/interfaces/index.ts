@@ -19,6 +19,11 @@ export interface IChangePasswordDto {
   oldPassword: string
 }
 
+export interface IUser {
+  email: string
+  userId: UUID
+}
+
 interface IVeryBaseToDo {
   title: string
   todoId: UUID
@@ -36,18 +41,6 @@ export interface IEmployeesIds {
 }
 
 export interface INewToDo extends IBaseToDo, IEmployeesIds {}
-
-export interface INewSubtask extends Pick<ISubtask, 'title' | 'description'> {
-  notesCountToBeCompleted: number
-  picturesCountToBeCompleted: number
-}
-
-export interface ISubtask {
-  title: string
-  description: string
-  isComplete: boolean
-  subTaskId: UUID
-}
 
 export interface IBaseToDo {
   title: string
@@ -71,7 +64,14 @@ enum ToDoStatusEnum {
   Uncompleted,
 }
 
-export interface IUser {
-  email: string
-  userId: UUID
+export interface INewSubtask extends Pick<ISubtask, 'title' | 'description'> {
+  notesCountToBeCompleted: number
+  picturesCountToBeCompleted: number
+}
+
+export interface ISubtask {
+  title: string
+  description: string
+  isComplete: boolean
+  subTaskId: UUID
 }
