@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
 
-import type { IToDo } from '../interfaces'
+import type { INewToDo, IToDo } from '../interfaces'
+import type HttpStatusCode from '../interfaces/HttpStatusCode'
 import { getToken } from '../utilities'
 
 import { ReducerNames, TagIds, TagTypes, URLs } from './types'
@@ -23,6 +24,14 @@ export const toDoApi = createApi({
   baseQuery: baseQueryWithRetry,
 
   endpoints: (builder) => ({
+    addToDo: builder.mutation<HttpStatusCode, INewToDo>({
+      invalidatesTags: [{ id: TagIds.LIST, type: TagTypes.TASK }],
+      query: (newToDo) => ({
+        body: newToDo,
+        method: 'POST',
+        url: '/Task',
+      }),
+    }),
     getToDos: builder.query<IToDo[], void>({
       providesTags: [{ id: TagIds.LIST, type: TagTypes.TASK }],
       query: () => '/Task',
@@ -34,4 +43,4 @@ export const toDoApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetToDosQuery } = toDoApi
+export const { useAddToDoMutation, useGetToDosQuery } = toDoApi

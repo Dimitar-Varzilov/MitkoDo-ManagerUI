@@ -8,16 +8,16 @@ import React, {
 import { useNavigate } from 'react-router-dom'
 
 import { useGetEmployeesQuery } from '../api/employeeApi'
-import { useAppContext } from '../context'
+import { useAddToDoMutation } from '../api/toDoApi'
 import type { IBaseToDo, INewToDo } from '../interfaces'
 
 const AddToDo = () => {
-  const { addToDo } = useAppContext()
+  const [addToDo] = useAddToDoMutation()
   const { data: employeeList = [] } = useGetEmployeesQuery()
   const [todo, setTodo] = useState<IBaseToDo>({
     title: '',
     description: '',
-    dueDate: new Date('2023-10-23'),
+    dueDate: new Date(),
     startDate: new Date(),
   })
   const [selectedEmployees, setSelectedEmployees] = useState<UUID[]>([])
@@ -42,7 +42,7 @@ const AddToDo = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
     event.stopPropagation()
-    if (!todo) return
+    if (!todo || selectedEmployees.length === 0) return
     const newData: INewToDo = { ...todo, employeeIds: selectedEmployees }
     addToDo(newData)
   }
@@ -62,6 +62,7 @@ const AddToDo = () => {
           defaultValue={todo.title}
           name="title"
           onChange={handleChange}
+          required
         />
         <p>Description</p>
         <input
@@ -69,6 +70,7 @@ const AddToDo = () => {
           defaultValue={todo.description}
           name="description"
           onChange={handleChange}
+          required
         />
         <p>Start date</p>
         <input
@@ -76,6 +78,7 @@ const AddToDo = () => {
           defaultValue={todo.startDate.toISOString().split('T')[0]}
           name="startDate"
           onChange={handleChange}
+          required
         />
         <p>Due date</p>
         <input
@@ -83,10 +86,11 @@ const AddToDo = () => {
           defaultValue={todo.dueDate.toISOString().split('T')[0]}
           name="dueDate"
           onChange={handleChange}
+          required
         />
         <p>Assign to:</p>
         <p>Hold Ctrl to select more than one</p>
-        <select multiple defaultValue={selectedEmployees}>
+        <select multiple defaultValue={selectedEmployees} required>
           {employeeList.map((employee) => {
             return (
               <option
