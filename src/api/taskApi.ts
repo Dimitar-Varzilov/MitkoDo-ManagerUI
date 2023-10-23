@@ -19,7 +19,7 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 })
 
-export const taskApi = createApi({
+export const toDoApi = createApi({
   baseQuery: baseQueryWithRetry,
 
   endpoints: (builder) => ({
@@ -28,10 +28,10 @@ export const taskApi = createApi({
       query: () => '/Task',
     }),
   }),
-  reducerPath: ReducerNames.TaskApi,
+  reducerPath: ReducerNames.ToDoApi,
   tagTypes: [TagTypes.TASK],
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetToDosQuery } = taskApi
+export const { useGetToDosQuery } = toDoApi
