@@ -59,7 +59,7 @@ export const authApi = createApi({
       query: (dto) => ({
         body: dto,
         method: 'POST',
-        url: '/register/employee',
+        url: '/register/manager',
       }),
     }),
   }),
