@@ -23,7 +23,7 @@ export const taskApi = createApi({
   baseQuery: baseQueryWithRetry,
 
   endpoints: (builder) => ({
-    fetchAllToDos: builder.query<IToDo[], void>({
+    getToDos: builder.query<IToDo[], void>({
       providesTags: [{ id: TagIds.LIST, type: TagTypes.TASK }],
       query: () => '/Task',
     }),
@@ -34,4 +34,4 @@ export const taskApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useFetchAllToDosQuery } = taskApi
+export const { useGetToDosQuery } = taskApi

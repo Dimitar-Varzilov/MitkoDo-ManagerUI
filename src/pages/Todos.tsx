@@ -4,10 +4,10 @@ import type { UUID } from 'crypto'
 
 import { useNavigate } from 'react-router-dom'
 
-import { useFetchAllToDosQuery } from '../api/taskApi'
+import { useGetToDosQuery } from '../api/taskApi'
 
 const Todos = () => {
-  const { data = [] } = useFetchAllToDosQuery()
+  const { data = [] } = useGetToDosQuery()
   const navigate = useNavigate()
 
   const gotToDetail = (todoId: UUID) => {

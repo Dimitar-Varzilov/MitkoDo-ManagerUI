@@ -25,5 +25,5 @@ export enum ReducerNames {
   AuthApi = 'authApi',
   EmployeeApi = 'employeeApi',
   Router = 'router',
-  TaskApi = 'taskApi',
+  ToDoApi = 'toDoApi',
 }
