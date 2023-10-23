@@ -29,7 +29,7 @@ export const taskApi = createApi({
     }),
   }),
   reducerPath: ReducerNames.TaskApi,
-  tagTypes: [TagTypes.TASK, TagTypes.EMPLOYEE],
+  tagTypes: [TagTypes.TASK],
 })
 
 // Export hooks for usage in functional components, which are
