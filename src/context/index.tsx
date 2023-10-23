@@ -11,7 +11,12 @@ import type {
   LoginDto,
   RegisterDto,
 } from '../interfaces'
-import { convertToDosDates, getToken, removeToken, setToken } from '../utils'
+import {
+  convertToDosDates,
+  getToken,
+  removeToken,
+  setToken,
+} from '../utilities'
 
 interface AppContextType {
   addSubtask: (toDoId: UUID, newSubTask: INewSubtask) => Promise<void>

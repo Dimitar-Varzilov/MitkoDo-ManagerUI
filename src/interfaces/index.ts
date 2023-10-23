@@ -12,6 +12,13 @@ export interface LoginDto {
   password: string
 }
 
+export interface IChangePasswordDto {
+  confirmPassword: string
+  email: string
+  newPassword: string
+  oldPassword: string
+}
+
 interface IVeryBaseToDo {
   title: string
   todoId: UUID
@@ -62,4 +69,9 @@ enum ToDoStatusEnum {
   Running,
   Completed,
   Uncompleted,
+}
+
+export interface IUser {
+  email: string
+  userId: UUID
 }

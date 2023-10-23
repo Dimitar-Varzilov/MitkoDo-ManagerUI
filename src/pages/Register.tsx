@@ -5,11 +5,11 @@ import React, {
 } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { useAppContext } from '../context'
+import { useRegisterUserMutation } from '../api/auth/authApi'
 import type { RegisterDto } from '../interfaces'
 
 const Register = () => {
-  const { registerUser } = useAppContext()
+  const [registerUser] = useRegisterUserMutation()
   const navigate = useNavigate()
   const [state, setState] = useState<RegisterDto>({
     name: '',
@@ -23,7 +23,7 @@ const Register = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    registerUser({ ...state })
+    registerUser(state)
     navigate('/login')
   }
   return (
@@ -53,6 +53,9 @@ const Register = () => {
           type="password"
           id="pass"
           name="password"
+          required
+          minLength={8}
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$"
           value={state.password}
           onChange={handleChange}
         />
@@ -62,6 +65,9 @@ const Register = () => {
           type="password"
           id="confirmPassword"
           name="confirmPassword"
+          required
+          minLength={8}
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$"
           value={state.confirmPassword}
           onChange={handleChange}
         />
