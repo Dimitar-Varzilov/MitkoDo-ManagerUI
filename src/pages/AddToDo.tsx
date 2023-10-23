@@ -7,11 +7,13 @@ import React, {
 } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { useGetEmployeesQuery } from '../api/employeeApi'
 import { useAppContext } from '../context'
 import type { IBaseToDo, INewToDo } from '../interfaces'
 
 const AddToDo = () => {
-  const { addToDo, employeeList } = useAppContext()
+  const { addToDo } = useAppContext()
+  const { data: employeeList = [] } = useGetEmployeesQuery()
   const [todo, setTodo] = useState<IBaseToDo>({
     title: '',
     description: '',

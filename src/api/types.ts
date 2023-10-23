@@ -1,6 +1,6 @@
 export enum URLs {
   AUTH = 'https://localhost:5000/Auth',
-  EMPLOYEE = 'https://localhost:5001/Employee',
+  EMPLOYEE = 'https://localhost:5001/',
   TASK = 'https://localhost:5002/',
 }
 
