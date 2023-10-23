@@ -1,3 +1,5 @@
+import { type UUID } from 'crypto'
+
 import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
 
 import type { INewToDo, IToDo } from '../interfaces'
@@ -32,6 +34,10 @@ export const toDoApi = createApi({
         url: '/Task',
       }),
     }),
+    getToDoById: builder.query<IToDo[], UUID>({
+      providesTags: [{ id: TagIds.LIST, type: TagTypes.TASK }],
+      query: (todoId) => `/Task/${todoId}`,
+    }),
     getToDos: builder.query<IToDo[], void>({
       providesTags: [{ id: TagIds.LIST, type: TagTypes.TASK }],
       query: () => '/Task',
@@ -43,4 +49,5 @@ export const toDoApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useAddToDoMutation, useGetToDosQuery } = toDoApi
+export const { useAddToDoMutation, useGetToDoByIdQuery, useGetToDosQuery } =
+  toDoApi
