@@ -5,7 +5,7 @@ export enum URLs {
 }
 
 export enum TagTypes {
-  TASK = 'Task',
+  TODO = 'ToDo',
   EMPLOYEE = 'Employee',
 }
 
