@@ -1,38 +1,30 @@
 import { type UUID } from 'crypto'
 
-export interface RegisterDto {
+interface IBaseUser {
   name: string
-  confirmPassword: string
   email: string
   password: string
+  userId: UUID
 }
 
-export interface LoginDto {
-  email: string
-  password: string
-}
-
-export interface IChangePasswordDto {
+export interface RegisterDto
+  extends Pick<IBaseUser, 'name' | 'email' | 'password'> {
   confirmPassword: string
-  email: string
+}
+
+export interface LoginDto extends Pick<IBaseUser, 'email' | 'password'> {}
+
+export interface IChangePasswordDto extends Pick<IBaseUser, 'email'> {
+  confirmPassword: string
   newPassword: string
   oldPassword: string
 }
 
-export interface IUser {
-  email: string
-  userId: UUID
-}
+export interface IUser extends Pick<IBaseUser, 'userId' | 'email'> {}
 
-interface IVeryBaseToDo {
-  title: string
-  todoId: UUID
-}
-
-export interface IEmployee {
-  name: string
+export interface IEmployee extends Pick<IBaseUser, 'name'> {
   employeeId: UUID
-  employeeToDos: IVeryBaseToDo[]
+  employeeToDos: Pick<IToDo, 'title' | 'todoId'>[]
   isAvailable: boolean
 }
 
@@ -57,9 +49,7 @@ export interface IToDo extends IBaseToDo {
   todoId: UUID
 }
 
-export interface IEditToDoDto extends IBaseToDo {
-  todoId: UUID
-}
+export interface IEditToDoDto extends IBaseToDo, Pick<IToDo, 'todoId'> {}
 
 enum ToDoStatusEnum {
   Upcoming,
@@ -80,6 +70,4 @@ export interface ISubtask extends IBaseSubtask {
   subTaskId: UUID
 }
 
-export interface IAddSubtaskDto extends IBaseSubtask {
-  todoId: UUID
-}
+export interface IAddSubtaskDto extends IBaseSubtask, Pick<IToDo, 'todoId'> {}
