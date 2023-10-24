@@ -5,7 +5,7 @@ import React, { createContext, useState } from 'react'
 import type {
   IEmployee,
   IEmployeesIds,
-  INewSubtask,
+  IBaseSubtask,
   INewToDo,
   IToDo,
   LoginDto,
@@ -19,13 +19,13 @@ import {
 } from '../utilities'
 
 interface AppContextType {
-  addSubtask: (toDoId: UUID, newSubTask: INewSubtask) => Promise<void>
+  addSubtask: (toDoId: UUID, newSubTask: IBaseSubtask) => Promise<void>
   addToDo: (newToDo: INewToDo) => Promise<void>
   assignEmployee: (toDoId: UUID, employeeId: UUID[]) => Promise<void>
   data: IToDo[]
   deleteSubtask: (subTaskId: UUID) => Promise<void>
   deleteToDo: (toDoId: UUID) => Promise<void>
-  editSubtask: (subTaskId: UUID, editedSubTask: INewSubtask) => Promise<void>
+  editSubtask: (subTaskId: UUID, editedSubTask: IBaseSubtask) => Promise<void>
   editToDo: (toDoId: UUID, editedSubTask: IToDo) => Promise<void>
   employeeList: IEmployee[]
   error?: Error
@@ -117,7 +117,7 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     }
   }
 
-  const addSubtask = async (toDoId: UUID, newSubTask: INewSubtask) => {
+  const addSubtask = async (toDoId: UUID, newSubTask: IBaseSubtask) => {
     setIsLoadingTrue()
     try {
       const response = await fetch(`${URLs.TASK}/subtask/add/${toDoId}`, {
@@ -196,7 +196,7 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     }
   }
 
-  const editSubtask = async (subTaskId: UUID, editedSubTask: INewSubtask) => {
+  const editSubtask = async (subTaskId: UUID, editedSubTask: IBaseSubtask) => {
     setIsLoadingTrue()
     try {
       const response = await fetch(`${URLs.TASK}/subtask/edit/${subTaskId}`, {

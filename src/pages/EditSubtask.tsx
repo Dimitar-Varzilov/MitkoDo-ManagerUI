@@ -2,7 +2,7 @@ import { type FormEventHandler, useState, type ChangeEventHandler } from 'react'
 import { Link, type To, useParams } from 'react-router-dom'
 
 import { useAppContext } from '../context'
-import type { INewSubtask, ISubtask } from '../interfaces'
+import type { IBaseSubtask, ISubtask } from '../interfaces'
 
 const EditSubtask = () => {
   const { subTaskId } = useParams()
@@ -19,7 +19,7 @@ const EditSubtask = () => {
     )
     return subTask
   })
-  const [formData, setFormData] = useState<INewSubtask>({
+  const [formData, setFormData] = useState<IBaseSubtask>({
     title: subTask?.title ?? '',
     description: subTask?.description ?? '',
     notesCountToBeCompleted: 1,
