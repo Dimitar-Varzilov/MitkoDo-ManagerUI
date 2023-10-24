@@ -34,6 +34,15 @@ export const toDoApi = createApi({
         url: '/Task',
       }),
     }),
+    deleteToDo: builder.mutation<HttpStatusCode, UUID>({
+      invalidatesTags: (result, error, toDoId) => [
+        { id: toDoId, type: TagTypes.TODO },
+      ],
+      query: (toDoId) => ({
+        method: 'DELETE',
+        url: `/Task/${toDoId}`,
+      }),
+    }),
     editToDo: builder.mutation<HttpStatusCode, IEditToDoDto>({
       invalidatesTags: (result, error, dto) => [
         { id: dto.todoId, type: TagTypes.TODO },
@@ -73,6 +82,7 @@ export const toDoApi = createApi({
 // auto-generated based on the defined endpoints
 export const {
   useAddToDoMutation,
+  useDeleteToDoMutation,
   useEditToDoMutation,
   useGetToDoByIdQuery,
   useGetToDosQuery,

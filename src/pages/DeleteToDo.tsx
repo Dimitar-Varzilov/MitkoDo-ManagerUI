@@ -1,13 +1,12 @@
 import type { UUID } from 'crypto'
 
-import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { useAppContext } from '../context'
+import { useDeleteToDoMutation } from '../api/toDoApi'
 
 const DeleteToDo = () => {
   const { todoId } = useParams()
-  const { deleteToDo } = useAppContext()
+  const [deleteToDo] = useDeleteToDoMutation()
   const navigate = useNavigate()
 
   const handleDelete = () => {
