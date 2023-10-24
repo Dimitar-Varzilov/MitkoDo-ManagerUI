@@ -1,40 +1,28 @@
 import { type UUID } from 'crypto'
 
-import React, {
-  type ChangeEventHandler,
-  type FormEventHandler,
-  useEffect,
-  useState,
-} from 'react'
+import { type ChangeEventHandler, type FormEventHandler, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
+import { useEditToDoMutation, useGetToDoByIdQuery } from '../api/toDoApi'
 import { useAppContext } from '../context'
-import type { IToDo } from '../interfaces'
+import { type IEditToDoDto } from '../interfaces'
 
 const EditTodo = () => {
   const { todoId } = useParams()
-  const { data, deleteSubtask, editToDo } = useAppContext()
-  const [todo, setTodo] = useState<IToDo | undefined>()
+  const { data: toDo } = useGetToDoByIdQuery(todoId as UUID)
+  const [editToDo] = useEditToDoMutation()
+  const { deleteSubtask } = useAppContext()
   const [formData, setFormData] = useState({})
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) =>
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   const navigate = useNavigate()
 
-  useEffect(() => {
-    data.forEach((t) => {
-      if (t.todoId === todoId) {
-        setTodo(t)
-        return true
-      }
-    })
-  }, [])
-
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
     event.stopPropagation()
-    if (!todo) return
-    const newData: IToDo = { ...todo, ...formData }
-    editToDo(todo.todoId, newData)
+    if (!toDo) return
+    const newData: IEditToDoDto = { ...toDo, ...formData }
+    editToDo(newData)
   }
 
   const goToEditSubTask = (subTaskId: UUID) => {
@@ -52,37 +40,37 @@ const EditTodo = () => {
   return (
     <div>
       <h1 className="text-4xl">MitkoDo</h1>
-      {!todo ? (
+      {!toDo || !todoId ? (
         <p>Todo not found</p>
       ) : (
         <>
-          <div>Todo id: {todo.todoId}</div>
-          <div>Todo title: {todo.title}</div>
-          <div>Todo description: {todo.description}</div>
-          <div>Todo startDate: {todo.startDate.toLocaleDateString()}</div>
-          <div>Todo dueDate: {todo.dueDate.toLocaleDateString()}</div>
+          <div>Todo id: {toDo.todoId}</div>
+          <div>Todo title: {toDo.title}</div>
+          <div>Todo description: {toDo.description}</div>
+          <div>Todo startDate: {toDo.startDate.toLocaleDateString()}</div>
+          <div>Todo dueDate: {toDo.dueDate.toLocaleDateString()}</div>
           <form onSubmit={handleSubmit}>
             <input
               type="text"
-              defaultValue={todo.title}
+              defaultValue={toDo.title}
               name="title"
               onChange={handleChange}
             />
             <input
               type="text"
-              defaultValue={todo.description}
+              defaultValue={toDo.description}
               name="description"
               onChange={handleChange}
             />
             <input
               type="date"
-              defaultValue={todo.startDate.toISOString().split('T')[0]}
+              defaultValue={toDo.startDate.toISOString().split('T')[0]}
               name="startDate"
               onChange={handleChange}
             />
             <input
               type="date"
-              defaultValue={todo.dueDate.toISOString().split('T')[0]}
+              defaultValue={toDo.dueDate.toISOString().split('T')[0]}
               name="dueDate"
               onChange={handleChange}
             />
@@ -92,7 +80,7 @@ const EditTodo = () => {
           <button onClick={goBack}>Back</button>
           <h3>Subtasks</h3>
           <div>
-            {todo.subTasks.map((subTask) => (
+            {toDo.subTasks.map((subTask) => (
               <div
                 key={subTask.subTaskId}
                 style={{
@@ -111,7 +99,7 @@ const EditTodo = () => {
                 </button>
               </div>
             ))}
-            <Link to={`/subtask/add/${todo.todoId}`}>Add subtask</Link>
+            <Link to={`/subtask/add/${toDo.todoId}`}>Add subtask</Link>
           </div>
         </>
       )}

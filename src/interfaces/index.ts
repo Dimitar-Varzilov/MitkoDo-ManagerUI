@@ -57,6 +57,10 @@ export interface IToDo extends IBaseToDo {
   todoId: UUID
 }
 
+export interface IEditToDoDto extends IBaseToDo {
+  todoId: UUID
+}
+
 enum ToDoStatusEnum {
   Upcoming,
   Running,
