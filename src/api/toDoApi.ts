@@ -26,7 +26,7 @@ export const toDoApi = createApi({
   baseQuery: baseQueryWithRetry,
 
   endpoints: (builder) => ({
-    addToDo: builder.mutation<HttpStatusCode, INewToDo>({
+    addToDo: builder.mutation<IToDo, INewToDo>({
       invalidatesTags: [{ id: TagIds.LIST, type: TagTypes.TODO }],
       query: (newToDo) => ({
         body: newToDo,
