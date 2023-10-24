@@ -1,24 +1,36 @@
-import { type FormEventHandler, useState, type ChangeEventHandler } from 'react'
+import { type UUID } from 'crypto'
+
+import {
+  type FormEventHandler,
+  useState,
+  type ChangeEventHandler,
+  useMemo,
+  useRef,
+} from 'react'
 import { Link, type To, useParams } from 'react-router-dom'
 
-import { useAppContext } from '../context'
-import type { IBaseSubtask, ISubtask } from '../interfaces'
+import { useEditSubTaskMutation, useGetToDosQuery } from '../api/toDoApi'
+import type { IBaseSubtask, IEditSubtaskDto, ISubtask } from '../interfaces'
 
 const EditSubtask = () => {
   const { subTaskId } = useParams()
-  const { data, editSubtask } = useAppContext()
-  const [subTask] = useState<ISubtask | undefined>(() => {
+  const { data = [] } = useGetToDosQuery()
+  const [editSubtask] = useEditSubTaskMutation()
+  const todoIdRef = useRef<UUID | undefined>()
+  const subTask = useMemo<ISubtask | undefined>(() => {
     let subTask: ISubtask | undefined = undefined
     data.forEach((t) =>
       t.subTasks.find((s) => {
         if (s.subTaskId === subTaskId) {
           subTask = s
+          todoIdRef.current = t.todoId
           return true
         }
       }),
     )
     return subTask
-  })
+  }, [data, subTaskId])
+
   const [formData, setFormData] = useState<IBaseSubtask>({
     title: subTask?.title ?? '',
     description: subTask?.description ?? '',
@@ -32,8 +44,13 @@ const EditSubtask = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
     event.stopPropagation()
-    if (!subTask) return
-    editSubtask(subTask.subTaskId, formData)
+    if (!subTask || !todoIdRef.current) return
+    const dto: IEditSubtaskDto = {
+      ...formData,
+      subTaskId: subTask.subTaskId,
+      todoId: todoIdRef.current,
+    }
+    editSubtask(dto)
   }
 
   return (

@@ -71,3 +71,8 @@ export interface ISubtask extends IBaseSubtask {
 }
 
 export interface IAddSubtaskDto extends IBaseSubtask, Pick<IToDo, 'todoId'> {}
+
+export interface IEditSubtaskDto
+  extends IBaseSubtask,
+    Pick<IToDo, 'todoId'>,
+    Pick<ISubtask, 'subTaskId'> {}

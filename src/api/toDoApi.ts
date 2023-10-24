@@ -4,6 +4,7 @@ import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
 
 import type {
   IAddSubtaskDto,
+  IEditSubtaskDto,
   IEditToDoDto,
   INewToDo,
   ISubtask,
@@ -59,6 +60,16 @@ export const toDoApi = createApi({
         url: `/Task/${toDoId}`,
       }),
     }),
+    editSubTask: builder.mutation<ISubtask, IEditSubtaskDto>({
+      invalidatesTags: (result, error, args) => [
+        { id: args.todoId, type: TagTypes.TODO },
+      ],
+      query: ({ subTaskId, ...rest }) => ({
+        body: rest,
+        method: 'PUT',
+        url: `/Task/subtask/edit/${subTaskId}`,
+      }),
+    }),
     editToDo: builder.mutation<HttpStatusCode, IEditToDoDto>({
       invalidatesTags: (result, error, dto) => [
         { id: dto.todoId, type: TagTypes.TODO },
@@ -100,6 +111,7 @@ export const {
   useAddSubTaskMutation,
   useAddToDoMutation,
   useDeleteToDoMutation,
+  useEditSubTaskMutation,
   useEditToDoMutation,
   useGetToDoByIdQuery,
   useGetToDosQuery,
