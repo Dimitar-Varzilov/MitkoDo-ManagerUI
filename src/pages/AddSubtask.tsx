@@ -1,20 +1,22 @@
+import { type UUID } from 'crypto'
+
 import { type FormEventHandler, useState, type ChangeEventHandler } from 'react'
 import { Link, type To, useParams } from 'react-router-dom'
 
-import { useAppContext } from '../context'
-import type { INewSubtask, IToDo } from '../interfaces'
+import { useAddSubTaskMutation, useGetToDoByIdQuery } from '../api/toDoApi'
+import type { IAddSubtaskDto } from '../interfaces'
 
 const AddSubtask = () => {
   const { todoId } = useParams()
-  const { addSubtask, data } = useAppContext()
-  const [toDo] = useState<IToDo | undefined>(() => {
-    return data.find((t) => t.todoId === todoId)
-  })
-  const [formData, setFormData] = useState<INewSubtask>({
+  const { data: toDo } = useGetToDoByIdQuery(todoId as UUID)
+  const [addSubtask] = useAddSubTaskMutation()
+
+  const [formData, setFormData] = useState<IAddSubtaskDto>({
     title: '',
     description: '',
     notesCountToBeCompleted: 1,
     picturesCountToBeCompleted: 0,
+    todoId: toDo?.todoId ?? (todoId as UUID),
   })
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) =>
@@ -24,7 +26,7 @@ const AddSubtask = () => {
     event.preventDefault()
     event.stopPropagation()
     if (!toDo) return
-    addSubtask(toDo.todoId, formData)
+    addSubtask(formData)
   }
 
   return (

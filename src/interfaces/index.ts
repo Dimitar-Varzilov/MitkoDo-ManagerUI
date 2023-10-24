@@ -68,14 +68,18 @@ enum ToDoStatusEnum {
   Uncompleted,
 }
 
-export interface IBaseSubtask extends Pick<ISubtask, 'title' | 'description'> {
+export interface IBaseSubtask {
+  title: string
+  description: string
   notesCountToBeCompleted: number
   picturesCountToBeCompleted: number
 }
 
-export interface ISubtask {
-  title: string
-  description: string
+export interface ISubtask extends IBaseSubtask {
   isComplete: boolean
   subTaskId: UUID
+}
+
+export interface IAddSubtaskDto extends IBaseSubtask {
+  todoId: UUID
 }

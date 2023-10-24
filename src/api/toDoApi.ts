@@ -2,7 +2,13 @@ import { type UUID } from 'crypto'
 
 import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
 
-import type { IEditToDoDto, INewToDo, IToDo } from '../interfaces'
+import type {
+  IAddSubtaskDto,
+  IEditToDoDto,
+  INewToDo,
+  ISubtask,
+  IToDo,
+} from '../interfaces'
 import type HttpStatusCode from '../interfaces/HttpStatusCode'
 import { convertToDosDates, getToken } from '../utilities'
 
@@ -26,6 +32,16 @@ export const toDoApi = createApi({
   baseQuery: baseQueryWithRetry,
 
   endpoints: (builder) => ({
+    addSubTask: builder.mutation<ISubtask, IAddSubtaskDto>({
+      invalidatesTags: (result, error, args) => [
+        { id: args.todoId, type: TagTypes.TODO },
+      ],
+      query: ({ todoId, ...rest }) => ({
+        body: rest,
+        method: 'POST',
+        url: `/Task/subtask/add/${todoId}`,
+      }),
+    }),
     addToDo: builder.mutation<IToDo, INewToDo>({
       invalidatesTags: [{ id: TagIds.LIST, type: TagTypes.TODO }],
       query: (newToDo) => ({
@@ -81,6 +97,7 @@ export const toDoApi = createApi({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const {
+  useAddSubTaskMutation,
   useAddToDoMutation,
   useDeleteToDoMutation,
   useEditToDoMutation,
