@@ -13,13 +13,6 @@ export enum TagIds {
   LIST = 'LIST',
 }
 
-export enum FetchStatus {
-  LOADING = 'loading',
-  SUCCEEDED = 'succeeded',
-  FAILED = 'failed',
-  IDLE = 'idle',
-}
-
 export enum ReducerNames {
   Auth = 'auth',
   AuthApi = 'authApi',
