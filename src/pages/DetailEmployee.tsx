@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { useAppContext } from '../context'
-import type { IEmployee } from '../interfaces'
+import { useGetEmployeesQuery } from '../api/employeeApi'
 
 const DetailEmployee = () => {
   const { employeeId } = useParams()
-  const { employeeList } = useAppContext()
-  const [employee, setEmployee] = useState<IEmployee | undefined>()
+  const { data: employeeList } = useGetEmployeesQuery()
+  const employee = useMemo(() => {
+    return employeeList?.find((employee) => employee.employeeId === employeeId)
+  }, [employeeId, employeeList])
 
-  useEffect(() => {
-    employeeList.forEach((e) => {
-      if (e.employeeId === employeeId) {
-        setEmployee(e)
-        return true
-      }
-    })
-  }, [])
   if (!employee) return <p>Employee not found</p>
   if (!employee.isAvailable)
     return (

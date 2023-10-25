@@ -2,13 +2,12 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import type { UUID } from 'crypto'
 
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { useAppContext } from '../context'
+import { useGetEmployeesQuery } from '../api/employeeApi'
 
 const Employees = () => {
-  const { employeeList } = useAppContext()
+  const { data: employeeList } = useGetEmployeesQuery()
   const navigate = useNavigate()
 
   const handleEmployeeClick = (employeeId: UUID) => {
@@ -18,7 +17,7 @@ const Employees = () => {
     <div>
       <h1>Employees</h1>
       <div>
-        {employeeList.map((employee) => (
+        {employeeList?.map((employee) => (
           <div key={employee.employeeId}>
             <div onClick={() => handleEmployeeClick(employee.employeeId)}>
               {employee.name}
