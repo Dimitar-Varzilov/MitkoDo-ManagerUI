@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { useGetEmployeesQuery } from '../api/employeeApi'
 import { useAddToDoMutation } from '../api/toDoApi'
-import type { IBaseToDo, INewToDo } from '../interfaces'
+import type { IBaseToDo, IAddToDoDto } from '../interfaces'
 
 const AddToDo = () => {
   const [addToDo] = useAddToDoMutation()
@@ -43,7 +43,7 @@ const AddToDo = () => {
     event.preventDefault()
     event.stopPropagation()
     if (!todo || selectedEmployees.length === 0) return
-    const newData: INewToDo = { ...todo, employeeIds: selectedEmployees }
+    const newData: IAddToDoDto = { ...todo, employeeIds: selectedEmployees }
     addToDo(newData)
   }
 

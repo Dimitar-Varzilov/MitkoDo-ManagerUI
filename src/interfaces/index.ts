@@ -32,13 +32,18 @@ export interface IEmployeesIds {
   employeeIds: UUID[]
 }
 
-export interface INewToDo extends IBaseToDo, IEmployeesIds {}
-
 export interface IBaseToDo {
   title: string
   description: string
   dueDate: Date
   startDate: Date
+}
+
+enum ToDoStatusEnum {
+  Upcoming,
+  Running,
+  Completed,
+  Uncompleted,
 }
 
 export interface IToDo extends IBaseToDo {
@@ -48,15 +53,9 @@ export interface IToDo extends IBaseToDo {
   subTasks: ISubtask[]
   todoId: UUID
 }
+export interface IAddToDoDto extends IBaseToDo, IEmployeesIds {}
 
 export interface IEditToDoDto extends IBaseToDo, Pick<IToDo, 'todoId'> {}
-
-enum ToDoStatusEnum {
-  Upcoming,
-  Running,
-  Completed,
-  Uncompleted,
-}
 
 export interface IBaseSubtask {
   title: string

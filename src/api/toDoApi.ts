@@ -7,7 +7,7 @@ import type {
   IDeleteSubtaskDto,
   IEditSubtaskDto,
   IEditToDoDto,
-  INewToDo,
+  IAddToDoDto,
   ISubtask,
   IToDo,
 } from '../interfaces'
@@ -44,7 +44,7 @@ export const toDoApi = createApi({
         url: `/Task/subtask/add/${todoId}`,
       }),
     }),
-    addToDo: builder.mutation<IToDo, INewToDo>({
+    addToDo: builder.mutation<IToDo, IAddToDoDto>({
       invalidatesTags: [{ id: TagIds.LIST, type: TagTypes.TODO }],
       query: (newToDo) => ({
         body: newToDo,

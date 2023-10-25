@@ -6,7 +6,7 @@ import type {
   IEmployee,
   IEmployeesIds,
   IBaseSubtask,
-  INewToDo,
+  IAddToDoDto,
   IToDo,
   LoginDto,
   RegisterDto,
@@ -20,7 +20,7 @@ import {
 
 interface AppContextType {
   addSubtask: (toDoId: UUID, newSubTask: IBaseSubtask) => Promise<void>
-  addToDo: (newToDo: INewToDo) => Promise<void>
+  addToDo: (newToDo: IAddToDoDto) => Promise<void>
   assignEmployee: (toDoId: UUID, employeeId: UUID[]) => Promise<void>
   data: IToDo[]
   deleteSubtask: (subTaskId: UUID) => Promise<void>
