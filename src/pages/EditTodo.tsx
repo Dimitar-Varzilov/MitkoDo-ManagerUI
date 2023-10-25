@@ -3,15 +3,18 @@ import { type UUID } from 'crypto'
 import { type ChangeEventHandler, type FormEventHandler, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-import { useEditToDoMutation, useGetToDoByIdQuery } from '../api/toDoApi'
-import { useAppContext } from '../context'
+import {
+  useDeleteSubTaskMutation,
+  useEditToDoMutation,
+  useGetToDoByIdQuery,
+} from '../api/toDoApi'
 import { type IEditToDoDto } from '../interfaces'
 
 const EditTodo = () => {
   const { todoId } = useParams()
   const { data: toDo } = useGetToDoByIdQuery(todoId as UUID)
   const [editToDo] = useEditToDoMutation()
-  const { deleteSubtask } = useAppContext()
+  const [deleteSubtask] = useDeleteSubTaskMutation()
   const [formData, setFormData] = useState({})
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) =>
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -30,7 +33,8 @@ const EditTodo = () => {
   }
 
   const handleDeleteSubtask = (subTaskId: UUID) => {
-    deleteSubtask(subTaskId)
+    if (!toDo) return
+    deleteSubtask({ subTaskId, todoId: toDo.todoId })
   }
 
   const goBack = () => {

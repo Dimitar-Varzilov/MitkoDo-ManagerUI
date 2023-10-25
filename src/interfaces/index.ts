@@ -76,3 +76,7 @@ export interface IEditSubtaskDto
   extends IBaseSubtask,
     Pick<IToDo, 'todoId'>,
     Pick<ISubtask, 'subTaskId'> {}
+
+export interface IDeleteSubtaskDto
+  extends Pick<IToDo, 'todoId'>,
+    Pick<ISubtask, 'subTaskId'> {}
