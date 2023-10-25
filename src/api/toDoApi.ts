@@ -10,6 +10,7 @@ import type {
   IAddToDoDto,
   ISubtask,
   IToDo,
+  IHandleToDoEmployeesDto,
 } from '../interfaces'
 import type HttpStatusCode from '../interfaces/HttpStatusCode'
 import { convertToDosDates, getToken } from '../utilities'
@@ -50,6 +51,16 @@ export const toDoApi = createApi({
         body: newToDo,
         method: 'POST',
         url: '/Task',
+      }),
+    }),
+    assignEmployees: builder.mutation<HttpStatusCode, IHandleToDoEmployeesDto>({
+      invalidatesTags: (result, error, dto) => [
+        { id: dto.todoId, type: TagTypes.TODO },
+      ],
+      query: (dto) => ({
+        body: dto.employeeIds,
+        method: 'POST',
+        url: `/Task/assignEmployee/${dto.todoId}`,
       }),
     }),
     deleteSubTask: builder.mutation<HttpStatusCode, IDeleteSubtaskDto>({
@@ -110,6 +121,16 @@ export const toDoApi = createApi({
       transformResponse: (baseQueryReturnValue: IToDo[]) =>
         convertToDosDates(baseQueryReturnValue),
     }),
+    removeEmployees: builder.mutation<HttpStatusCode, IHandleToDoEmployeesDto>({
+      invalidatesTags: (result, error, dto) => [
+        { id: dto.todoId, type: TagTypes.TODO },
+      ],
+      query: (dto) => ({
+        body: dto,
+        method: 'POST',
+        url: `/Task/removeEmployee/${dto.todoId}`,
+      }),
+    }),
   }),
   reducerPath: ReducerNames.ToDoApi,
   tagTypes: [TagTypes.TODO],
@@ -120,10 +141,12 @@ export const toDoApi = createApi({
 export const {
   useAddSubTaskMutation,
   useAddToDoMutation,
+  useAssignEmployeesMutation,
   useDeleteSubTaskMutation,
   useDeleteToDoMutation,
   useEditSubTaskMutation,
   useEditToDoMutation,
   useGetToDoByIdQuery,
   useGetToDosQuery,
+  useRemoveEmployeesMutation,
 } = toDoApi

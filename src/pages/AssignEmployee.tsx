@@ -1,25 +1,17 @@
 import { type UUID } from 'crypto'
 
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { useAppContext } from '../context'
-import { type IToDo } from '../interfaces'
+import { useGetEmployeesQuery } from '../api/employeeApi'
+import { useAssignEmployeesMutation, useGetToDoByIdQuery } from '../api/toDoApi'
 
 const AssignEmployee = () => {
   const { todoId } = useParams()
-  const { assignEmployee, data, employeeList } = useAppContext()
-  const [todo, setTodo] = useState<IToDo | undefined>()
+  const { data: employeeList = [] } = useGetEmployeesQuery()
+  const { data: todo } = useGetToDoByIdQuery(todoId as UUID)
+  const [assignEmployee] = useAssignEmployeesMutation()
   const [selectedEmployee, setSelectedEmployee] = useState<UUID[]>([])
-
-  useEffect(() => {
-    data.forEach((t) => {
-      if (t.todoId === todoId) {
-        setTodo(t)
-        return true
-      }
-    })
-  }, [])
 
   const handleSelectChange = (employeeId: UUID) => {
     setSelectedEmployee((prev) =>
@@ -31,7 +23,7 @@ const AssignEmployee = () => {
 
   const handleSubmit = () => {
     if (!todo) return
-    assignEmployee(todo.todoId, selectedEmployee)
+    assignEmployee({ employeeIds: selectedEmployee, todoId: todo.todoId })
   }
 
   if (!todo) return <p>Todo not found</p>

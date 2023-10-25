@@ -1,30 +1,18 @@
 import type { UUID } from 'crypto'
 
-import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { useAppContext } from '../context'
-import type { IToDo } from '../interfaces'
+import { useGetToDoByIdQuery, useRemoveEmployeesMutation } from '../api/toDoApi'
 
 const DetailTodo = () => {
   const { todoId } = useParams()
-  const { data, removeEmployeeFromToDo } = useAppContext()
-  const [todo, setTodo] = useState<IToDo | undefined>()
+  const { data: todo } = useGetToDoByIdQuery(todoId as UUID)
   const navigate = useNavigate()
-
-  useEffect(() => {
-    if (!todoId) return
-    data.forEach((t) => {
-      if (t.todoId === todoId) {
-        setTodo(t)
-        return true
-      }
-    })
-  }, [])
+  const [removeEmployeeFromToDo] = useRemoveEmployeesMutation()
 
   const handleRemoveClick = (employeeId: UUID) => {
     if (!todo) return
-    removeEmployeeFromToDo(todo.todoId, { employeeIds: [employeeId] })
+    removeEmployeeFromToDo({ employeeIds: [employeeId], todoId: todo.todoId })
   }
 
   const goToEditToDo = () => {

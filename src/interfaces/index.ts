@@ -57,6 +57,10 @@ export interface IAddToDoDto extends IBaseToDo, IEmployeesIds {}
 
 export interface IEditToDoDto extends IBaseToDo, Pick<IToDo, 'todoId'> {}
 
+export interface IHandleToDoEmployeesDto
+  extends IEmployeesIds,
+    Pick<IToDo, 'todoId'> {}
+
 export interface IBaseSubtask {
   title: string
   description: string
