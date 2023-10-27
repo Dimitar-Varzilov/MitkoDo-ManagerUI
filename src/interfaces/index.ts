@@ -35,8 +35,8 @@ export interface IEmployeesIds {
 export interface IBaseToDo {
   title: string
   description: string
-  dueDate: Date
-  startDate: Date
+  dueDate: string
+  startDate: string
 }
 
 enum ToDoStatusEnum {

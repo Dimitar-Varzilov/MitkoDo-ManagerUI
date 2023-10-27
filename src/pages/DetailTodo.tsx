@@ -3,6 +3,7 @@ import type { UUID } from 'crypto'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { useGetToDoByIdQuery, useRemoveEmployeesMutation } from '../api/toDoApi'
+import { getLocaleDateString } from '../utilities'
 
 const DetailTodo = () => {
   const { todoId } = useParams()
@@ -31,8 +32,9 @@ const DetailTodo = () => {
     <div>
       <h2>{todo?.title}</h2>
       <h2>
-        {todo?.startDate.toLocaleDateString()}-
-        {todo?.dueDate.toLocaleDateString()}{' '}
+        <span>{getLocaleDateString(todo.startDate)}</span>
+        <span> - </span>
+        <span>{getLocaleDateString(todo.dueDate)}</span>
       </h2>{' '}
       <p>Assigned employees</p>
       <div

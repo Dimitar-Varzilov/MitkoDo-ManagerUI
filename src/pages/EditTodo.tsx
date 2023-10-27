@@ -8,7 +8,8 @@ import {
   useEditToDoMutation,
   useGetToDoByIdQuery,
 } from '../api/toDoApi'
-import { type IEditToDoDto } from '../interfaces'
+import type { IEditToDoDto } from '../interfaces'
+import { getLocaleDateString, isoStringSplitter } from '../utilities'
 
 const EditTodo = () => {
   const { todoId } = useParams()
@@ -51,8 +52,8 @@ const EditTodo = () => {
           <div>Todo id: {toDo.todoId}</div>
           <div>Todo title: {toDo.title}</div>
           <div>Todo description: {toDo.description}</div>
-          <div>Todo startDate: {toDo.startDate.toLocaleDateString()}</div>
-          <div>Todo dueDate: {toDo.dueDate.toLocaleDateString()}</div>
+          <div>Todo startDate: {getLocaleDateString(toDo.startDate)}</div>
+          <div>Todo dueDate: {getLocaleDateString(toDo.dueDate)}</div>
           <form onSubmit={handleSubmit}>
             <input
               type="text"
@@ -68,13 +69,13 @@ const EditTodo = () => {
             />
             <input
               type="date"
-              defaultValue={toDo.startDate.toISOString().split('T')[0]}
+              defaultValue={isoStringSplitter(toDo.startDate)}
               name="startDate"
               onChange={handleChange}
             />
             <input
               type="date"
-              defaultValue={toDo.dueDate.toISOString().split('T')[0]}
+              defaultValue={isoStringSplitter(toDo.dueDate)}
               name="dueDate"
               onChange={handleChange}
             />

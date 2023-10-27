@@ -13,7 +13,7 @@ import type {
   IHandleToDoEmployeesDto,
 } from '../interfaces'
 import type HttpStatusCode from '../interfaces/HttpStatusCode'
-import { convertToDosDates, getToken } from '../utilities'
+import { getToken } from '../utilities'
 
 import { ReducerNames, TagIds, TagTypes, URLs } from './types'
 
@@ -104,8 +104,6 @@ export const toDoApi = createApi({
     getToDoById: builder.query<IToDo, UUID>({
       providesTags: (result, error, id) => [{ id, type: TagTypes.TODO }],
       query: (todoId) => `/Task/${todoId}`,
-      transformResponse: (baseQueryReturnValue: IToDo) =>
-        convertToDosDates([baseQueryReturnValue])[0],
     }),
     getToDos: builder.query<IToDo[], void>({
       providesTags: (result) =>
@@ -118,8 +116,6 @@ export const toDoApi = createApi({
             ]
           : [{ id: TagIds.LIST, type: TagTypes.TODO }],
       query: () => '/Task',
-      transformResponse: (baseQueryReturnValue: IToDo[]) =>
-        convertToDosDates(baseQueryReturnValue),
     }),
     removeEmployees: builder.mutation<HttpStatusCode, IHandleToDoEmployeesDto>({
       invalidatesTags: (result, error, dto) => [
