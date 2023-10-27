@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { useGetEmployeesQuery } from '../api/employeeApi'
 import { useAddToDoMutation } from '../api/toDoApi'
 import type { IBaseToDo, IAddToDoDto } from '../interfaces'
+import { isoStringSplitter } from '../utilities'
 
 const AddToDo = () => {
   const [addToDo] = useAddToDoMutation()
@@ -17,8 +18,8 @@ const AddToDo = () => {
   const [todo, setTodo] = useState<IBaseToDo>({
     title: '',
     description: '',
-    dueDate: new Date(),
-    startDate: new Date(),
+    dueDate: new Date().toISOString(),
+    startDate: new Date().toISOString(),
   })
   const [selectedEmployees, setSelectedEmployees] = useState<UUID[]>([])
 
@@ -32,7 +33,10 @@ const AddToDo = () => {
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) =>
     setTodo((prev) => {
       if (e.target.name === 'startDate' || e.target.name === 'dueDate') {
-        return { ...prev, [e.target.name]: new Date(e.target.value) }
+        return {
+          ...prev,
+          [e.target.name]: new Date(e.target.value).toISOString(),
+        }
       }
       return { ...prev, [e.target.name]: e.target.value }
     })
@@ -75,7 +79,7 @@ const AddToDo = () => {
         <p>Start date</p>
         <input
           type="date"
-          defaultValue={todo.startDate.toISOString().split('T')[0]}
+          defaultValue={isoStringSplitter(todo.startDate)}
           name="startDate"
           onChange={handleChange}
           required
@@ -83,14 +87,14 @@ const AddToDo = () => {
         <p>Due date</p>
         <input
           type="date"
-          defaultValue={todo.dueDate.toISOString().split('T')[0]}
+          defaultValue={isoStringSplitter(todo.dueDate)}
           name="dueDate"
           onChange={handleChange}
           required
         />
         <p>Assign to:</p>
-        <p>Hold Ctrl to select more than one</p>
-        <select multiple defaultValue={selectedEmployees} required>
+        <p>Hold Ctrl to select more than one employee</p>
+        <select multiple defaultValue={selectedEmployees}>
           {employeeList.map((employee) => {
             return (
               <option
