@@ -43,15 +43,18 @@ export const authApi = createApi({
         try {
           const response = await axios.post<string>(`${URLs.AUTH}/login`, dto)
           if (response.status < 200 || response.status >= 300) {
-            return { error: response.statusText }
+            return {
+              error: response.statusText,
+            }
+          } else {
+            const data = response.data
+            setToken(data)
+            api.dispatch(tokenReceived(data))
+            api.dispatch(loggedIn())
+            return { data }
           }
-          const data = response.data
-          setToken(data)
-          api.dispatch(tokenReceived(data))
-          api.dispatch(loggedIn())
-          return { data }
         } catch (error: any) {
-          return { error }
+          return { error: error.message }
         }
       },
     }),

@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { useLoginUserMutation } from '../api/auth/authApi'
 import type { LoginDto } from '../interfaces'
+import { passwordRegex } from '../utilities'
 
 const Login: FC = () => {
   const [loginUser] = useLoginUserMutation()
@@ -38,6 +39,7 @@ const Login: FC = () => {
           name="email"
           value={state.email}
           onChange={handleChange}
+          required
         />
 
         <label htmlFor="pass">Password</label>
@@ -47,6 +49,8 @@ const Login: FC = () => {
           name="password"
           value={state.password}
           onChange={handleChange}
+          required
+          pattern={passwordRegex.source}
         />
 
         <button className="button-primary" type="submit">
