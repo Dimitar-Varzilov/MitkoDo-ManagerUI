@@ -46,7 +46,7 @@ const AddToDo = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
     event.stopPropagation()
-    if (!todo || selectedEmployees.length === 0) return
+    if (!todo) return
     const newData: IAddToDoDto = { ...todo, employeeIds: selectedEmployees }
     addToDo(newData)
   }
